@@ -11,5 +11,4 @@ public class OnlinetelebookApplication {
     public static void main(String[] args) {
         SpringApplication.run(OnlinetelebookApplication.class, args);
     }
-
 }
