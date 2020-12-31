@@ -1,7 +1,7 @@
 package com.wmk.onlinetelebook.controller;
 
 
-import com.wmk.onlinetelebook.pojo.Result;
+import com.wmk.onlinetelebook.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.wmk.onlinetelebook.pojo;
+package com.wmk.onlinetelebook.common;
 
 public class Result<T> {
     private int code;

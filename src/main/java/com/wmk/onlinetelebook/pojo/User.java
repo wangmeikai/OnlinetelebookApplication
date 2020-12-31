@@ -1,12 +1,17 @@
 package com.wmk.onlinetelebook.pojo;
 
-public class User {
-    private String userName;
-    private String pwd;
+import java.io.Serializable;
 
-    public User(String userName, String pwd) {
-        this.userName = userName;
-        this.pwd = pwd;
+public class User implements Serializable {
+    private String userName;
+    private String passWord;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", passWord='" + passWord + '\'' +
+                '}';
     }
 
     public String getUserName() {
@@ -17,11 +22,11 @@ public class User {
         this.userName = userName;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getPassWord() {
+        return passWord;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
     }
 }

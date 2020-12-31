@@ -12,6 +12,6 @@
        <setting name="aggressiveLazyLoading" value="false"/>
     </settings>
     <typeAliases>
-        <package name="com.wmk.myspringboot.pojo"/>
+        <package name="com.wmk.onlinetelebook.pojo"/>
     </typeAliases>
 </configuration>
