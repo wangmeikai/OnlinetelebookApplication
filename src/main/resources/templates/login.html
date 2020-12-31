@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.css}">
+</head>
+<body>
+<div class="text-center bg-light h-100" width="300px" height="200px">
+    <form action="/loginIn" class="text-left mx-auto card p-4 w-100 p-2" method="post">
+        <span th:text="${#request.getAttribute('msg')}" class="text text-center" style="color: red"></span><br/>
+        用户名：<input class="form-control mb-3" name="userName" type="text" placeholder="用户名"><br/>
+        密  码：<input class="form-control mb-3" name="pwd" type="password" placeholder="密码"><br/>
+        <input type="submit" class="btn btn-lg btn-primary btn-block mt-3"  value="登录">
+    </form>
+    <form action="/regist" class="text-left mx-auto card p-4 w-100 p-2">
+        <input type="submit" class="btn btn-lg btn-primary btn-block mt-3"  value="注册">
+    </form>
+</div>
+
+</body>
+</html>
