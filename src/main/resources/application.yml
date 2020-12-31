@@ -1,0 +1,26 @@
+server:
+  port: 80
+
+# 实现页面热部署
+spring:
+  thymeleaf:
+   cache: false
+  #数据库连接配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://121.196.105.239:3306/springboot?serverTimezone=GMT%2B8  # 阿里云服务器
+    username: root
+    password: 123456
+    type: com.mchange.v2.c3p0.ComboPooledDataSource
+
+#mybatis配置文件和mapper映射文件
+mybatis:
+  mapper‐locations: classpath:mapper/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+#  type-aliases-package: com.wmk.onlinetelebook.pojo  #不影响运行，但是会变红
+#日志
+logging:
+  pattern:
+    console: '%logger{50} == %msg%n'
+  level:
+    com.wmk.onlinetelebook.mapper: debug
