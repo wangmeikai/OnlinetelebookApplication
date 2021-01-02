@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.css}">
+    <script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+</head>
+<body>
+<div class="text-center bg-light" style="height: 500px">
+    <h1>主页面</h1>
+    <form action="/loginOut" style="width: 100px;float: right;margin-right: 20px">
+        <input type="submit" class="btn btn-danger" value="登出">
+    </form>
+    <br/>
+    <input id="money" style="width: 200px;align-content: center" placeholder="支付金额">
+    <br/>
+    <input id="pay1" class="btn btn-lg btn-primary  mt-3" value="支付post">
+    <input id="pay2" class="btn btn-lg btn-primary  mt-3" value="支付get">
+    <br/>
+    <br/>
+    <span id="msg" style="font-size: larger"></span>
+    <script>
+        $('#pay1').click(function () {
+            $.ajax({
+                type: "post",
+                url: "/pay",
+                contentType: "application/json", //发送给前端的数据格式application/json&&application/x-www-form-urlencoded
+                dataType: "json",  //服务器返回的数据格式
+                data: JSON.stringify({    //  发送给服务器的数据
+                    money: $("#money").val()
+                }),
+                success: function (res) {
+                    if (res.code === 200){
+                        alert(res.msg)
+                        $("#msg").text(res.data)
+                        $("#money").val("")
+                    }
+                }
+            })
+        });
+
+        $('#pay2').click(function () {
+            $.ajax({
+                type: "get",
+                url: "/pay",
+                data: {    //  发送给服务器的数据
+                    money: $("#money").val()
+                },
+                success: function (res) {
+                    $("#msg").text(res)
+                    $("#money").val("")
+                }
+            })
+        })
+    </script>
+</div>
+
+</body>
+</html>

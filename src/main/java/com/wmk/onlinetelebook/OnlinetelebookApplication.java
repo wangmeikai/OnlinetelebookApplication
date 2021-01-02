@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @SpringBootApplication
 @ServletComponentScan("com.wmk.onlinetelebook.filter")
 @MapperScan("com.wmk.onlinetelebook.mapper")
+
 public class OnlinetelebookApplication {
 
     public static void main(String[] args) {

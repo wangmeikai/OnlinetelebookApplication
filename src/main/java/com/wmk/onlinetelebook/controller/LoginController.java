@@ -3,6 +3,7 @@ package com.wmk.onlinetelebook.controller;
 
 import com.wmk.onlinetelebook.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,28 +14,31 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class LoginController {
 
     @Autowired
     LoginService loginService;
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     @RequestMapping({"/", "/login", "/login.html"})
     public String login() {
         return "login";
     }
 
-    @RequestMapping({"/main"})
+    @GetMapping({"/main"})
     public String main() {
         return "main";
     }
 
     @PostMapping({"/loginIn"})
     public void loginIn(HttpServletRequest request, HttpServletResponse response, String userName, String pwd) throws ServletException, IOException {
-        boolean isLogin = loginService.loginIn(userName, pwd);
-        if (isLogin){
-            request.getSession().setAttribute("userName",userName);
+        boolean canLogin = loginService.loginIn(userName, pwd);
+        if (canLogin){
+            stringRedisTemplate.opsForValue().set(userName,"isLogin",30,TimeUnit.MINUTES);
             response.addCookie(new Cookie("userName",userName));
             response.sendRedirect("/main");
         }else {
@@ -48,7 +52,14 @@ public class LoginController {
 
     @GetMapping({"/loginOut"})
     public void loginOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().removeAttribute("userName");
+        Cookie[] cookies = request.getCookies();
+        String userName = null;
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("userName")){
+                userName = cookie.getValue();
+            }
+        }
+        stringRedisTemplate.delete(userName);
         request.setAttribute("msg","登出成功");
         request.getRequestDispatcher("/login").forward(request, response);
 

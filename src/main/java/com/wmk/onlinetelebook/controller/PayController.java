@@ -12,7 +12,6 @@ public class PayController {
     @GetMapping({"/pay"})
     @ResponseBody
     public String pay(@RequestParam("money") int money) {
-        System.out.println("zhifu");
         return "支付"+money+"元成功";
     }
 

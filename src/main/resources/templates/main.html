@@ -2,56 +2,65 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>登录</title>
+    <title>我的日记本</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.css}">
     <script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
 </head>
 <body>
 <div class="text-center bg-light" style="height: 500px">
-    <h1>主页面</h1>
+    <h5>我的日记本</h5>
     <form action="/loginOut" style="width: 100px;float: right;margin-right: 20px">
         <input type="submit" class="btn btn-danger" value="登出">
     </form>
-    <br/>
-    <input id="money" style="width: 200px;align-content: center" placeholder="支付金额">
-    <br/>
-    <input id="pay1" class="btn btn-lg btn-primary  mt-3" value="支付post">
-    <input id="pay2" class="btn btn-lg btn-primary  mt-3" value="支付get">
+    <input id="submitTest" value="提交" class="btn btn-info" style="width: 60px;float: right;margin-right: 20px"/>
     <br/>
     <br/>
-    <span id="msg" style="font-size: larger"></span>
+    <textarea id="nowText" class="text" cols="160" rows="5" style="float: none"></textarea>
+
+    <br/>
+    <br/>
+    历史日记：
+    <br/>
+    <div id="historyText" class="text" style="text-align: left;margin-left: 100px">
+    </div>
     <script>
-        $('#pay1').click(function () {
+        window.onload = function(){
+            $.ajax({
+                type: "GET",
+                url: "/loadall",
+                contentType: "application/json", //发送给前端的数据格式application/json&&application/x-www-form-urlencoded
+                dataType: "json",  //服务器返回的数据格式
+                success: function (res) {
+                    if (res.code === 200){
+                        $.each(res.data,function (i,ele) {
+                            $("#historyText").prepend("<hr/>")
+                            $("#historyText").prepend(ele.content+"<br/>")
+                            $("#historyText").prepend("<h5>第"+(ele.index)+"条： 时间："+ele.dateStr +"    天气："+ele.weather+"</h5>")
+                        });
+                    }
+                }
+            })
+        };
+
+        $('#submitTest').click(function () {
             $.ajax({
                 type: "post",
-                url: "/pay",
+                url: "/submitTest",
                 contentType: "application/json", //发送给前端的数据格式application/json&&application/x-www-form-urlencoded
                 dataType: "json",  //服务器返回的数据格式
                 data: JSON.stringify({    //  发送给服务器的数据
-                    money: $("#money").val()
+                    nowText: $("#nowText").val()
                 }),
                 success: function (res) {
-                    if (res.code == 200){
-                        alert(res.msg)
-                        console.log(res)
-                        $("#msg").text(res.data)
+                    if (res.code === 200){
+                        $("#historyText").prepend("<hr/>")
+                        $("#historyText").prepend(res.data.content+"<br/>")
+                        $("#historyText").prepend("<h5>第"+(res.data.index)+"条： 时间："+res.data.dateStr +"    天气："+res.data.weather+"</h5>")
+                        //$("#nowText").val("")
                     }
                 }
             })
         });
-
-        $('#pay2').click(function () {
-            $.ajax({
-                type: "get",
-                url: "/pay",
-                data: {    //  发送给服务器的数据
-                    money: $("#money").val()
-                },
-                success: function (res) {
-                    $("#msg").text(res)
-                }
-            })
-        })
     </script>
 </div>
 
